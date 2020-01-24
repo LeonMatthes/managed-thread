@@ -6,7 +6,7 @@ authors = ["Leon Matthes <leon@matthes.biz>"]
 repository = "https://github.com/mrmodder/managed-thread"
 edition = "2018"
 readme = "README.md"
-keywords = ["thread", "managed", "garbage collection"]
+keywords = ["thread", "managed", "drop", "automatically"]
 categories = ["concurrency"]
 license = "MIT"
 
