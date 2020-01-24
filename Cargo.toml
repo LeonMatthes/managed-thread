@@ -2,7 +2,7 @@
 name = "managed-thread"
 version = "0.0.1"
 authors = ["Leon Matthes <leon@matthes.biz>"]
-repositor = "https://github.com/mrmodder/managed-thread"
+repository = "https://github.com/mrmodder/managed-thread"
 edition = "2018"
 readme = "README.md"
 keywords = ["thread", "managed", "garbage collection"]
