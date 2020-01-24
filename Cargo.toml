@@ -1,5 +1,6 @@
 [package]
 name = "managed-thread"
+description = "Real fearless concurrency! Spawn threads that will be automatically destroyed when no longer needed"
 version = "0.0.1"
 authors = ["Leon Matthes <leon@matthes.biz>"]
 repository = "https://github.com/mrmodder/managed-thread"
