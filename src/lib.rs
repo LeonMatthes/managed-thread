@@ -43,6 +43,8 @@ pub struct Signal {
 
 impl Signal {
     /// Check whether the thread this signal was passed to is allowed to continue
+    ///
+    /// Opposite of [should_stop](struct.Signal.html#method.should_stop)
     pub fn should_continue(&self) -> bool {
         !self.should_stop()
     }
@@ -77,7 +79,7 @@ impl Controller {
 /// Whenever the OwnedThread is dropped, the underlying thread is signaled to stop execution.
 ///
 /// Note however that the underlying thread may not exit immediately. It is only guaranted, that
-/// the thread will receive the signal to abort, but how long it will keep running and depends on
+/// the thread will receive the signal to abort, but how long it will keep running depends on
 /// the function that is passed when starting the thread.
 #[derive(Debug)]
 pub struct OwnedThread<T> {
@@ -107,13 +109,19 @@ impl<T> OwnedThread<T> {
     }
 }
 
+impl<T> Drop for OwnedThread<T> {
+    fn drop(&mut self) {
+        self.stop();
+    }
+}
+
 /// The main function of this library.
 ///
 /// It will create a new thread with a [Signal](struct.Signal.html) that is controlled by the
 /// [OwnedThread](struct.OwnedThread.html) object it returns.
 ///
 /// The `thread_function` that is passed to this thread is responsible for periodically checking
-/// the signal and make sure it exits when the signal indicates that it should do so.
+/// the signal and to make sure it exits when the signal indicates that it should do so.
 pub fn spawn_owned<T: Send + 'static, F: FnOnce(Signal) -> T + Send + 'static>(
     thread_function: F,
 ) -> OwnedThread<T> {
@@ -127,12 +135,6 @@ pub fn spawn_owned<T: Send + 'static, F: FnOnce(Signal) -> T + Send + 'static>(
         stop_controller: Controller {
             stop_sender: signal_sender,
         },
-    }
-}
-
-impl<T> Drop for OwnedThread<T> {
-    fn drop(&mut self) {
-        self.stop();
     }
 }
 
