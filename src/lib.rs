@@ -109,9 +109,14 @@ impl<T> OwnedThread<T> {
     }
 }
 
+/// Drop the OwnedThread.
+/// Blocks until the owned thread finishes!
 impl<T> Drop for OwnedThread<T> {
     fn drop(&mut self) {
         self.stop();
+        if let Some(handle) = self.join_handle.take() {
+            handle.join().ok();
+        }
     }
 }
 
